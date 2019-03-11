@@ -1,0 +1,40 @@
+{
+  "name": "uidemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sources/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint sources/",
+    "build": "webpack --env.production true",
+    "dev": "webpack --env.production false --watch",
+    "module": "webpack --env.production true --env.module true",
+    "standalone": "webpack --env.production true --env.module true --env.standalone true",
+    "start": "webpack-dev-server --open"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.6.0",
+    "file-loader": "^2.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.8.1",
+    "less-loader": "^4.0.5",
+    "mini-css-extract-plugin": "^0.4.0",
+    "url-loader": "^1.1.1",
+    "webpack": "^4.12.1",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "dependencies": {
+    "echarts": "^4.2.0-rc.1",
+    "echarts-gl": "^1.1.1",
+    "webix": "^5.4.0",
+    "webix-jet": "^1.6.1"
+  }
+}

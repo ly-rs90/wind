@@ -1,0 +1,9 @@
+.idea/
+node_modules/
+assets/
+dist/
+*.pyc
+*.log
+
+/shrinkwrap.yaml
+static/index.html
