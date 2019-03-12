@@ -8,13 +8,13 @@ let getData = function(dt, type, name) {
     readData(dt, type, name).then(function (r) {
         let res = r.json();
         if (type === "basic") {
-            $$("gen:cost").define("label", parseFloat(res.gen_cost).toFixed(2));
+            $$("gen:cost").define("label", '运行成本：'+parseFloat(res.gen_cost).toFixed(2));
             $$("gen:cost").refresh();
-            $$("wind").define("label", parseFloat(res.wind).toFixed(2));
+            $$("wind").define("label", '弃风指标：'+parseFloat(res.wind).toFixed(2));
             $$("wind").refresh();
-            $$("spin").define("label", parseFloat(res.spin).toFixed(2));
+            $$("spin").define("label", '旋备成本：'+parseFloat(res.spin).toFixed(2));
             $$("spin").refresh();
-            $$("margin").define("label", parseFloat(res.margin).toFixed(2));
+            $$("margin").define("label", '断面指标：'+parseFloat(res.margin).toFixed(2));
             $$("margin").refresh();
             $$('conf:prob').setValue(parseFloat(res.conf).toFixed(2));
 
@@ -132,7 +132,39 @@ export default class Riqianyouhua extends JetView{
         return {
             type: "space",
             rows: [
-                {template: "日前优化调度主界面", css: "page-header", height: 60},
+                {
+                    css: 'panel',
+                    cols: [
+                        {
+                            css: "date-picker date-picker-none", view: "datepicker", width: 180,
+                            value: new Date(), format: "%Y/%m/%d", id: "date", stringResult: 1,
+                            on: {
+                                onChange: function () {
+                                    let dat = $$("date").getValue().split(" ")[0].replace(/-/g, "");
+                                    getData(dat, "basic");
+                                }
+                            }
+                        },
+                        {
+                            view: "text", label: "置信区间", labelPosition: "left", width: 180, labelWidth: 100,
+                            align: "center", css: "text", id: 'conf:prob'
+                        },
+                        {
+                            view: "combo", label: "优化算法", width: 240, labelPosition: "left", labelWidth: 100,
+                            align: "center", options: [
+                                {id: "0", value: "确定性算法"},
+                                {id: "1", value: "随机-鲁棒算法"}
+                            ], css: "combo combo-opt", value: "0"
+                        },
+                        {view: "label", label: "计算启动时间", css: "label label-2"},
+                        {view: "label", label: "计算用时", css: "label label-2"},
+                        {view: "button", label: "启动计算", width: 120, align: "center", css: "button-normal"},
+                        {view: "label", label: "运行成本：", css: "label", id: "gen:cost"},
+                        {view: "label", label: "弃风指标：", css: "label", id: "wind"},
+                        {view: "label", label: "旋备成本：", css: "label", id: "spin"},
+                        {view: "label", label: "断面指标：", css: "label", id: "margin"}
+                    ]
+                },
                 {
                     view: "scrollview", scroll: "y", borderless: 1,
                     body: {
@@ -140,101 +172,6 @@ export default class Riqianyouhua extends JetView{
                             {
                                 type: "wide",
                                 cols: [
-                                    {
-                                        type: "wide", width: 220,
-                                        rows: [
-                                            {
-                                                css: "panel", align: "center",
-                                                rows: [
-                                                    {
-                                                        css: "date-picker date-picker-none", view: "datepicker",
-                                                        value: new Date(), format: "%Y/%m/%d", id: "date", stringResult: 1,
-                                                        on: {
-                                                            onChange: function () {
-                                                                let dat = $$("date").getValue().split(" ")[0].replace(/-/g, "");
-                                                                getData(dat, "basic");
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                css: "panel panel-param",
-                                                rows: [
-                                                    {
-                                                        view: "button", type: "iconButton", icon: "sliders", label: "参数配置",
-                                                        css: "panel-header panel-header-param"
-                                                    },
-                                                    {},
-                                                    {
-                                                        view: "text", label: "置信区间", labelPosition: "top", width: 170,
-                                                        align: "center", css: "text", id: 'conf:prob'
-                                                    },
-                                                    {},
-                                                    {
-                                                        view: "combo", label: "优化算法", width: 170, labelPosition: "top",
-                                                        align: "center", options: [
-                                                            {id: "0", value: "确定性算法"},
-                                                            {id: "1", value: "随机-鲁棒算法"}
-                                                        ], css: "combo combo-opt", value: "0"
-                                                    },
-                                                    {}
-                                                ]
-                                            },
-                                            {
-                                                css: "panel",
-                                                rows: [
-                                                    {
-                                                        view: "button", type: "iconButton", icon: "play-circle-o", label: "启动计算",
-                                                        css: "panel-header panel-header-calc"
-                                                    },
-                                                    {},
-                                                    {view: "label", label: "计算启动时间", css: "label label-2"},
-                                                    {},
-                                                    {view: "label", label: "计算用时", css: "label label-2"},
-                                                    {},
-                                                    {view: "button", label: "启动计算", width: 170, align: "center", css: "button-normal"},
-                                                    {}
-                                                ]
-                                            },
-                                            {
-                                                css: "panel",
-                                                rows: [
-                                                    {
-                                                        view: "button", type: "iconButton", icon: "calendar-check-o", label: "计算结果",
-                                                        css: "panel-header panel-header-param"
-                                                    },
-                                                    {},
-                                                    {
-                                                        cols: [
-                                                            {view: "label", label: "运行成本", css: "label"},
-                                                            {view: "label", label: "弃风指标", css: "label"}
-                                                        ]
-                                                    },
-                                                    {
-                                                        cols: [
-                                                            {view: "label", label: "", css: "label label-1", id: "gen:cost"},
-                                                            {view: "label", label: "", css: "label label-1", id: "wind"}
-                                                        ]
-                                                    },
-                                                    {},
-                                                    {
-                                                        cols: [
-                                                            {view: "label", label: "旋备成本", css: "label"},
-                                                            {view: "label", label: "断面指标", css: "label"}
-                                                        ]
-                                                    },
-                                                    {
-                                                        cols: [
-                                                            {view: "label", label: "", css: "label label-1", id: "spin"},
-                                                            {view: "label", label: "", css: "label label-1", id: "margin"}
-                                                        ]
-                                                    },
-                                                    {minHeight: 10}
-                                                ]
-                                            }
-                                        ]
-                                    },
                                     {
                                         type: "wide", id: 'a',
                                         rows: [

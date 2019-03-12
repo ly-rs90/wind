@@ -112,7 +112,7 @@
 }
 .combo .webix_el_box input, .combo-dev .webix_el_box input, .combo-chart .webix_el_box input{
 	font-weight: 400;
-	font-size: 18px;
+	font-size: 14px;
 	color: #222;
 	cursor: pointer;
 }
