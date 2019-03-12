@@ -14,7 +14,7 @@ let getXCoording = function (num) {
     return x;
 };
 export const option1 = {
-    title: {text: "新能源机组总和"},
+    title: {text: "新能源机组"},
     grid: {x: 60, y: 60, x2: 50, y2: 40},
     legend: {top: 20, data: ["优化设定值", "预测均值", "计划区间上限", "计划区间下限"]},
     tooltip: {trigger: "axis"},
@@ -50,7 +50,7 @@ export const option1 = {
     ]
 };
 export const option2 = {
-    title: {text: "传统机组总和"},
+    title: {text: "传统机组"},
     grid: {x: 60, y: 60, x2: 50, y2: 40},
     legend: {top: 20, data: ["优化设定值", "计划区间上限", "计划区间下限"]},
     tooltip: {trigger: "axis"},
@@ -140,8 +140,22 @@ export const option4 = {
     ]
 };
 
+export const option5 = {
+    grid: {x: 250, y: 30, x2: 50, y2: 30},
+    xAxis: {
+        type: 'value', min: 1, max: 168, axisPointer: {show: true}
+    },
+    yAxis: {type: 'category'},
+    series: [{type: 'bar'}]
+};
+
 export const readData = function (date, type, name) {
     let p = {date: date, type: type};
     if(name) p["name"] = name;
     return webix.ajax().post("/riqian", p);
+};
+
+export const readPlanData = function (date) {
+    let p = {date: date};
+    return webix.ajax().post("/devplan", p);
 };
