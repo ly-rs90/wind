@@ -13,6 +13,7 @@ from tornado.options import define, options
 from tornado.ioloop import IOLoop
 from handlers.riqian import Riqian
 from handlers.devplan import DevPlan
+from handlers.powerplan import PowerPlan
 
 define('port', default=80, type=int, help='监听端口...')
 
@@ -22,6 +23,7 @@ STATIC_PATH = os.path.join(ROOT, 'static')
 URL_ROUTE = [
     (r'/riqian', Riqian),
     (r'/devplan', DevPlan),
+    (r'/powerplan', PowerPlan),
     (r'/(.*)', StaticFileHandler, {'path': STATIC_PATH, 'default_filename': 'index.html'}),
 ]
 

@@ -21,21 +21,21 @@
     }
     echarts.registerTheme('walden', {
         "color": [
-            "#3fb1e3",
-            "#6be6c1",
-            "#626c91",
-            "#a0a7e6",
-            "#c4ebad",
+            "#21c2ff",
+            "#18e681",
+            "#fff324",
+            "#b78aff",
+            "#ffb300",
             "#96dee8"
         ],
         "backgroundColor": "rgba(252,252,252,0)",
         "textStyle": {},
         "title": {
             "textStyle": {
-                "color": "#666666"
+                "color": "#fff"
             },
             "subtextStyle": {
-                "color": "#999999"
+                "color": "#fff"
             }
         },
         "line": {
@@ -275,7 +275,7 @@
             "axisLabel": {
                 "show": true,
                 "textStyle": {
-                    "color": "#999999"
+                    "color": "#fff"
                 }
             },
             "splitLine": {
@@ -287,7 +287,7 @@
                 }
             },
             "splitArea": {
-                "show": false,
+                "show": true,
                 "areaStyle": {
                     "color": [
                         "rgba(250,250,250,0.05)",
@@ -312,7 +312,7 @@
             "axisLabel": {
                 "show": true,
                 "textStyle": {
-                    "color": "#999999"
+                    "color": "#fff"
                 }
             },
             "splitLine": {
@@ -324,7 +324,7 @@
                 }
             },
             "splitArea": {
-                "show": false,
+                "show": true,
                 "areaStyle": {
                     "color": [
                         "rgba(250,250,250,0.05)",
@@ -419,7 +419,7 @@
         },
         "legend": {
             "textStyle": {
-                "color": "#999999"
+                "color": "#fff"
             }
         },
         "tooltip": {

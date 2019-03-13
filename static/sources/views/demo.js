@@ -6,7 +6,7 @@ export default class Demo extends JetView{
         return {
             rows: [
                 {
-                    view: "toolbar", padding: 3, css: "toolbar",
+                    view: "toolbar", padding: 3, css: "toolbar", borderless: 1,
                     elements: [
                         {
                             view: "button", type: "icon", icon: "bars", width: 30, css: "menu",
@@ -23,7 +23,7 @@ export default class Demo extends JetView{
                 {
                     cols: [
                         {
-                            view: "sidebar", id: "sidebar", css: "sidebar", collapsed: 1, data: [
+                            view: "sidebar", id: "sidebar", css: "sidebar", collapsed: 1, borderless: 1, data: [
                                 {id: "riqianyouhua", value: "日前优化", icon: "hourglass-o"},
                                 {id: "riqianinfo", value: "日前详细结果展示", icon: "info-circle"},
                                 {id: "rineiyouhua", value: "日内优化", icon: "hourglass-1"},

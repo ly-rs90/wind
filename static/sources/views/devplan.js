@@ -43,7 +43,7 @@ let getData = function (date) {
                 });
                 let temp1 = [];
                 temp.forEach(function (d2) {
-                    let color = '#1a78cc';
+                    let color = '#1d98ff';
                     if (d2 === '0') {
                         color = '#c1250d';
                     }
@@ -79,17 +79,34 @@ export default class DevPlan extends JetView {
                                     }
                                 },
                                 {},
-                                {view: 'label', label: '运行成本：', width: 180, id: 'gen:cost'},
+                                {view: 'label', label: '运行成本：', width: 180, id: 'gen:cost', css: 'label'},
                                 {},
-                                {view: 'label', label: '弃风指标：', width: 180, id: 'wind:cost'},
+                                {view: 'label', label: '弃风指标：', width: 180, id: 'wind:cost', css: 'label'},
                                 {},
-                                {view: 'label', label: '旋备指标：', width: 180, id: 'spin:cost'},
+                                {view: 'label', label: '旋备指标：', width: 180, id: 'spin:cost', css: 'label'},
                                 {},
-                                {view: 'label', label: '断面指标：', width: 180, id: 'margin:cost'},
+                                {view: 'label', label: '断面指标：', width: 180, id: 'margin:cost', css: 'label'},
                                 {}
                             ]
                         },
-                        {id: 'chart1', css: "panel"},
+                        {
+                            rows: [
+                                {height: 10, css: 'panel'},
+                                {
+                                    height: 30, css: 'panel',
+                                    cols: [
+                                        {},
+                                        {view: 'button', width: 40, css: 'start-btn'},
+                                        {view: 'label', label: '启', css: 'label', autowidth: 1},
+                                        {width: 30},
+                                        {view: 'button', width: 40, css: 'stop-btn'},
+                                        {view: 'label', label: '停', css: 'label', autowidth: 1},
+                                        {}
+                                    ]
+                                },
+                                {id: 'chart1', css: "panel"}
+                            ]
+                        },
                         {height: 5}
                     ]
                 },
@@ -118,7 +135,7 @@ export default class DevPlan extends JetView {
     }
 
     destroy() {
-        window.onresize = null;
-        this.app.detachEvent("toggle:menu");
+        //window.onresize = null;
+        //this.app.detachEvent("toggle:menu");
     }
 }

@@ -1,24 +1,30 @@
 ::-webkit-scrollbar{display:none;}
 .webix_layout_space, .webix_layout_wide {
-	background: #eff1f1;
+	background: #022e4c;
+	border: none;
 }
+
 .menu button:focus, .menu button:hover{
-	background: #1aad70 !important;
+	background: transparent !important;
 }
 .sidebar{
-	background: #fff;
-	color: #222;
-	font-size: 18px;
+	margin-top: 1px !important;
+	background: #146499;
+	color: #fff;
+	font-size: 16px;
+}
+.sidebar .webix_tree_item{
+	color: #fff !important;
 }
 .sidebar .webix_selected, .sidebar .webix_selected span{
 	background: transparent !important;
-	color: #0CC18F !important;
+	color: #eb9b2f !important;
 }
 .sidebar .webix_tree_branch_1{
 	border: none;
 }
 .toolbar{
-	background: #0CC18F !important;
+	background: #084a74 !important;
 }
 .toolbar .webix_el_label {
 	margin-left: 0;
@@ -32,10 +38,10 @@
 	color: #222;
 }
 .panel {
-	background: #fff;
+	background: #146499;
 }
 .panel-1 {
-	background: #dcdcdc;
+	background: #084a74;
 }
 .panel-header button{
 	background: transparent;
@@ -63,16 +69,17 @@
 	min-height: 160px;
 }
 .button-normal button, .button-normal button:hover, .button-normal button:active, .button-normal button:focus{
-	background: #0CC18F;
+	background: #ffbd28;
 	border: none;
 }
 .date-picker .webix_inp_static{
 	font-size: 18px;
 	font-weight: 400;
-	color: #222;
+	color: #eb9b2f;
 }
 .date-picker-none .webix_inp_static{
-	border: 1px solid #fff;
+	border: 1px solid #43a5d6;
+	background: #044066;
 }
 .date-picker-none .webix_inp_static:focus{
 	border: 1px solid #ffffff;
@@ -81,7 +88,7 @@
 .date-picker .webix_inp_static::before{
 	font-family:FontAwesome;
 	content: "\f073";
-	color: #1DD19F;
+	color: #fff;
 	display: inline-block;
 	margin-right: 10px;
 }
@@ -90,7 +97,7 @@
 }
 .date-picker span::before, .combo span::before{
 	content: "\f0da";
-	color: #aaa;
+	color: #43a5d6;
 }
 .combo-dev .webix_el_box::before{
 	font-family:FontAwesome;
@@ -113,30 +120,32 @@
 .combo .webix_el_box input, .combo-dev .webix_el_box input, .combo-chart .webix_el_box input{
 	font-weight: 400;
 	font-size: 14px;
-	color: #222;
+	color: #eb9b2f;
 	cursor: pointer;
 }
 .combo-dev .webix_el_box input, .combo-chart .webix_el_box input{
 	padding-left: 30px;
 }
 .combo-opt input{
-	background: #F6F7F7;
+	background: #044066;
+	border: none;
 }
 .combo-opt label{
-	color: #999;
+	color: #fff;
 	font-size: 14px;
 	padding-left: 25px;
 }
 .text label{
-	color: #999;
+	color: #fff;
 	font-size: 14px;
 	padding-left: 25px;
 }
 .text input{
-	background: #F6F7F7;
-	color: #222;
+	background: #044066;
+	color: #eb9b2f;
 	font-weight: 400;
 	font-size: 20px;
+	border: none
 }
 .webix_window, .webix_window .webix_list{
 	background: #f6f7f7 !important;
@@ -148,12 +157,12 @@
 	color: #0CC18F;
 }
 .label{
-	color: #999;
+	color: #fff;
 	font-size: 14px;
 	text-align: center;
 }
 .label-1{
-	color: #222;
+	color: #fff;
 	font-weight: 400;
 	font-size: 20px;
 }
@@ -163,14 +172,34 @@
 }
 .list{
 	font-size: 14px;
-	color: #222;
+	color: #fff;
 	font-weight: 400;
+	background: #084a74 !important;
 }
 .list .webix_selected{
-	background: #aaa;
-	color: #fff;
+	background: #146499;
+	color: #eb9b2f;
 	border: none !important;
 }
 .list .webix_list_item {
 	border: none;
+}
+.search input {
+	background: #044066;
+	color: #fff;
+	border: 1px solid #316fa5;
+}
+.top {
+	margin-left: 0 !important;
+	margin-top: 1px !important;
+}
+.start-btn button, .start-btn button:hover {
+	background: #1d98ff !important;
+	border: none;
+	cursor: default;
+}
+.stop-btn button, .stop-btn button:hover {
+	background: #c1250d;
+	border: none;
+	cursor: default;
 }

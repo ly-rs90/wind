@@ -72,26 +72,28 @@ let getData = function(dt, type, name) {
                             name: "计划区间上限",
                             type: "line",
                             lineStyle: {width: 3},
+                            areaStyle: {origin: 'start', opacity: 0.3},
                             data: res.wind_pub
                         },
                         {
                             name: "计划区间下限",
                             type: "line",
                             lineStyle: {width: 3},
+                            areaStyle: {origin: 'start', color: '#146499', opacity: 1},
                             data: res.wind_plb
                         },
                         {
                             name: "预测上限",
                             type: "line",
                             lineStyle: {width: 3},
-                            areaStyle: {origin: 'start'},
+                            areaStyle: {origin: 'start', opacity: 0.3},
                             data: res.wind_cub
                         },
                         {
                             name: "预测下限",
                             type: "line",
                             lineStyle: {width: 3},
-                            areaStyle: {origin: 'start', color: '#fff', opacity: 1},
+                            areaStyle: {origin: 'start', color: '#146499', opacity: 1},
                             data: res.wind_clb
                         }
                     ]
@@ -130,7 +132,7 @@ let getData = function(dt, type, name) {
 export default class Riqianyouhua extends JetView{
     config() {
         return {
-            type: "space",
+            type: "space", css: 'top',
             rows: [
                 {
                     css: 'panel',
@@ -186,6 +188,7 @@ export default class Riqianyouhua extends JetView{
                                                                 rows: [
                                                                     {
                                                                         view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
+                                                                        css: 'search',
                                                                         on: {
                                                                             onTimedKeyPress: function () {
                                                                                 let dev = $$("wind:dev");
@@ -221,6 +224,7 @@ export default class Riqianyouhua extends JetView{
                                                                 rows: [
                                                                     {
                                                                         view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
+                                                                        css: 'search',
                                                                         on: {
                                                                             onTimedKeyPress: function () {
                                                                                 let dev = $$("equ:dev");
@@ -264,6 +268,7 @@ export default class Riqianyouhua extends JetView{
                                                                         rows: [
                                                                             {
                                                                                 view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
+                                                                                css: 'search',
                                                                                 on: {
                                                                                     onTimedKeyPress: function () {
                                                                                         let dev = $$("power:dev");
@@ -299,6 +304,7 @@ export default class Riqianyouhua extends JetView{
                                                                         rows: [
                                                                             {
                                                                                 view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
+                                                                                css: 'search',
                                                                                 on: {
                                                                                     onTimedKeyPress: function () {
                                                                                         let dev = $$("margin:dev");
@@ -375,7 +381,7 @@ export default class Riqianyouhua extends JetView{
         });
     }
     destroy() {
-        window.onresize = null;
-        this.app.detachEvent("toggle:menu");
+        // window.onresize = null;
+        // this.app.detachEvent("toggle:menu");
     }
 }
