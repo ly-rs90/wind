@@ -10,7 +10,7 @@ export default class Riqianinfo extends JetView{
                     type: "wide", height: 46,
                     cols: [
                         {
-                            align: "center", css: "date-picker", minWidth: 200, maxWidth: 250,
+                            align: "center", css: "date-picker date-picker-none", minWidth: 200, maxWidth: 250,
                             view: "datepicker", value: new Date(), format: "%Y/%m/%d"
                         },
                         {

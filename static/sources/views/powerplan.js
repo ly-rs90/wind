@@ -210,6 +210,9 @@ export default class PowerPlan extends JetView{
                                                                     {
                                                                         view: "list", select: 1, borderless: 1, data: [],
                                                                         scroll: "y", css: "panel-1 list", id: "wind:dev",
+                                                                        tooltip: function (obj) {
+                                                                            return obj.value;
+                                                                        },
                                                                         on: {
                                                                             onItemClick: function (id) {
                                                                                 let item = $$("wind:dev").getItem(id);
@@ -246,6 +249,9 @@ export default class PowerPlan extends JetView{
                                                                     {
                                                                         view: "list", select: 1, borderless: 1, data: [],
                                                                         scroll: "y", css: "panel-1 list", id: "equ:dev",
+                                                                        tooltip: function (obj) {
+                                                                            return obj.value;
+                                                                        },
                                                                         on: {
                                                                             onItemClick: function (id) {
                                                                                 let item = $$("equ:dev").getItem(id);
@@ -290,6 +296,9 @@ export default class PowerPlan extends JetView{
                                                                             {
                                                                                 view: "list", select: 1, borderless: 1, data: [],
                                                                                 scroll: "y", css: "panel-1 list", id: "power:dev",
+                                                                                tooltip: function (obj) {
+                                                                                    return obj.value;
+                                                                                },
                                                                                 on: {
                                                                                     onItemClick: function (id) {
                                                                                         let item = $$("power:dev").getItem(id);
@@ -326,6 +335,9 @@ export default class PowerPlan extends JetView{
                                                                             {
                                                                                 view: "list", select: 1, borderless: 1, css: "panel-1 list",
                                                                                 data: [], scroll: "y", id: "margin:dev",
+                                                                                tooltip: function (obj) {
+                                                                                    return obj.value;
+                                                                                },
                                                                                 on: {
                                                                                     onItemClick: function (id) {
                                                                                         let item = $$("margin:dev").getItem(id);

@@ -148,13 +148,13 @@
 	border: none
 }
 .webix_window, .webix_window .webix_list{
-	background: #f6f7f7 !important;
+	background: #044066 !important;
 	font-size: 14px;
-	color: #222;
+	color: #fff;
 }
 .webix_window, .webix_window .webix_list .webix_selected{
 	background: transparent;
-	color: #0CC18F;
+	color: #eb9b2f;
 }
 .label{
 	color: #fff;
@@ -184,6 +184,9 @@
 .list .webix_list_item {
 	border: none;
 }
+.list .webix_list_item:focus {
+	outline: none;
+}
 .search input {
 	background: #044066;
 	color: #fff;
@@ -202,4 +205,24 @@
 	background: #c1250d;
 	border: none;
 	cursor: default;
+}
+.webix_sidebar_popup {
+	box-shadow: 2px 2px 3px #000;
+}
+.webix_sidebar_popup .webix_sidebar_popup_title {
+	background: #044066;
+	color: #fff;
+}
+.webix_sidebar_popup .webix_sidebar_popup_title .webix_template, .webix_popup {
+	border: none !important;
+	box-shadow: 2px 2px 3px #000;
+}
+.webix_calendar {
+	background: #044066;
+}
+.webix_view > .webix_cal_header div, .webix_cal_day, .webix_cal_month, .webix_cal_footer {
+	color: #fff;
+}
+.webix_cal_event {
+	color: #3498db;
 }
