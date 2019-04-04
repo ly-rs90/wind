@@ -1,4 +1,4 @@
-let getXCoording = function (num) {
+export const getXCoording = function (num, start, len) {
     let n = num || 96;
     let x = [];
     let nowBegin = new Date(new Date().toLocaleDateString()).getTime()/1000;
@@ -11,7 +11,17 @@ let getXCoording = function (num) {
         if (minute < 10) minute = "0" + minute;
         x.push(hour + ":" + minute);
     }
+    if (start !== undefined && len !== undefined) {
+        x = x.slice(start, start + len);
+    }
     return x;
+};
+export const timesData = function (arr, v) {
+    let temp = [];
+    arr.map(function (item) {
+        temp.push((parseFloat(item)*v).toFixed(3));
+    });
+    return temp;
 };
 export const option1 = {
     title: {text: "新能源机组"},
@@ -19,7 +29,7 @@ export const option1 = {
     legend: {top: 20, data: ["优化设定值", "预测均值", "计划区间上限", "计划区间下限"]},
     tooltip: {trigger: "axis"},
     xAxis: {name: "时间", data: getXCoording(), boundaryGap: false, splitLine: {interval: 3, show: false}, z: 3},
-    yAxis: [{name: "百兆瓦", nameGap: 8, z: 3}, {}],
+    yAxis: [{name: "兆瓦", nameGap: 8, z: 3}, {}],
     series: [
         {
             name: "优化设定值",
@@ -55,7 +65,7 @@ export const option2 = {
     legend: {top: 20, data: ["优化设定值", "计划区间上限", "计划区间下限"]},
     tooltip: {trigger: "axis"},
     xAxis: {name: "时间", data: getXCoording(), boundaryGap: false, z: 3, splitLine: {show: false}},
-    yAxis: [{name: "百兆瓦", nameGap: 8, z: 3, scale: true}, {}],
+    yAxis: [{name: "兆瓦", nameGap: 8, z: 3, scale: true}, {}],
     series: [
         {
             name: "优化设定值",
@@ -85,7 +95,7 @@ export const option3 = {
     legend: {top: 20, data: ["优化设定值", "计划区间上限", "计划区间下限", "上限", "下限"]},
     tooltip: {trigger: "axis"},
     xAxis: {name: "时间", data: getXCoording(), boundaryGap: false, z: 3, splitLine: {show: false}},
-    yAxis: [{name: "百兆瓦", nameGap: 8, z: 3}, {}],
+    yAxis: [{name: "兆瓦", nameGap: 8, z: 3}, {}],
     series: [
         {
             name: "优化设定值",
@@ -129,7 +139,7 @@ export const option4 = {
     legend: {top: 20, data: ["优化设定值"]},
     tooltip: {trigger: "axis"},
     xAxis: {name: "时间", data: getXCoording(), boundaryGap: false, splitLine: {interval: 3, show: false}},
-    yAxis: [{name: "百兆瓦", nameGap: 8}, {}],
+    yAxis: [{name: "兆瓦", nameGap: 8}, {}],
     series: [
         {
             name: "优化设定值",
@@ -177,7 +187,7 @@ export const option6 = {
         })(),
         boundaryGap: false, splitLine: {interval: 3, show: false}, z: 3,
     },
-    yAxis: [{name: "百兆瓦", nameGap: 8, z: 3}, {}],
+    yAxis: [{name: "兆瓦", nameGap: 8, z: 3}, {}],
     series: [
         {
             name: "优化设定值",
@@ -222,7 +232,7 @@ export const option7 = {
         })(),
         boundaryGap: false, z: 3, splitLine: {show: false}
     },
-    yAxis: [{name: "百兆瓦", nameGap: 8, z: 3, scale: true}, {}],
+    yAxis: [{name: "兆瓦", nameGap: 8, z: 3, scale: true}, {}],
     series: [
         {
             name: "优化设定值",
@@ -261,7 +271,7 @@ export const option8 = {
         })(),
         boundaryGap: false, z: 3, splitLine: {show: false}
     },
-    yAxis: [{name: "百兆瓦", nameGap: 8, z: 3}, {}],
+    yAxis: [{name: "兆瓦", nameGap: 8, z: 3}, {}],
     series: [
         {
             name: "优化设定值",
@@ -314,7 +324,7 @@ export const option9 = {
         })(),
         boundaryGap: false, splitLine: {interval: 3, show: false}
     },
-    yAxis: [{name: "百兆瓦", nameGap: 8}, {}],
+    yAxis: [{name: "兆瓦", nameGap: 8}, {}],
     series: [
         {
             name: "优化设定值",

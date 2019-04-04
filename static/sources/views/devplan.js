@@ -21,7 +21,7 @@ let getData = function (date) {
         else {
             $$('gen:cost').define('label', '运行成本：'+parseFloat(res.gen_cost).toFixed(2));
             $$('gen:cost').refresh();
-            $$('wind:cost').define('label', '弃风指标：'+parseFloat(res.wind).toFixed(2));
+            $$('wind:cost').define('label', '弃风风险：'+parseFloat(res.wind).toFixed(2));
             $$('wind:cost').refresh();
             $$('spin:cost').define('label', '旋备指标：'+parseFloat(res.spin).toFixed(2));
             $$('spin:cost').refresh();
@@ -81,7 +81,7 @@ export default class DevPlan extends JetView {
                                 {},
                                 {view: 'label', label: '运行成本：', width: 180, id: 'gen:cost', css: 'label'},
                                 {},
-                                {view: 'label', label: '弃风指标：', width: 180, id: 'wind:cost', css: 'label'},
+                                {view: 'label', label: '弃风风险：', width: 180, id: 'wind:cost', css: 'label'},
                                 {},
                                 {view: 'label', label: '旋备指标：', width: 180, id: 'spin:cost', css: 'label'},
                                 {},

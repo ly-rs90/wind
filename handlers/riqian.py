@@ -20,7 +20,7 @@ class Riqian(RequestHandler):
             'wind_dev': [], 'power_dev': [], 'margin_dev': [], 'equ_dev': [], 'margin_opt': [],
             'margin_plb': [], 'margin_pub': [], 'margin_max': [], 'margin_min': [],
             'wind_opt': [], 'wind_plb': [], 'wind_pub': [], 'wind_fur': [], 'wind_cub': [], 'wind_clb': [],
-            'power_opt': [], 'power_plb': [], 'power_pub': [], 'equ_opt': []
+            'power_opt': [], 'power_plb': [], 'power_pub': [], 'equ_opt': [], 'start': 1, 'end': 96, 'interval': 15
         }
         _date = self.get_argument('date')
         _type = self.get_argument('type', '')
@@ -36,6 +36,21 @@ class Riqian(RequestHandler):
             res_data['code'] = 1
             res_data['msg'] = '加载e文件失败！'
         else:
+            sys_table = engine.getTable('sys')
+            table_col_name = sys_table.getAllColNames()
+            start_pt = sys_table.getColumsData('start_pt', table_col_name)
+            end_pt = sys_table.getColumsData('end_pt', table_col_name)
+            mins = sys_table.getColumsData('mins', table_col_name)
+
+            start = int(start_pt[0]['data'][0])
+            end = int(end_pt[0]['data'][0])
+            total_num = end - start + 2
+            min_interval = int(mins[0]['data'][0])
+
+            res_data['start'] = start
+            res_data['end'] = end
+            res_data['interval'] = min_interval
+
             table_list = engine.getAllTableNames()
             if _type == 'basic':
                 for tb in table_list:
@@ -70,7 +85,7 @@ class Riqian(RequestHandler):
                             res_data['margin_dev'].append({'value': m})
                     elif tb == 'statics_crv':    # 新能源和传统机组总加数据
                         statics = table.getColumsData('name', table_col_name)
-                        for n in range(1, 97):
+                        for n in range(1, total_num):
                             wind_opt = statics[2+n]['data'][0]     # 新能源优化设定值
                             wind_fur = statics[2+n]['data'][1]     # 新能源预测均值
                             wind_plb = statics[2+n]['data'][2]     # 新能源计划区间下限
@@ -112,7 +127,7 @@ class Riqian(RequestHandler):
                     if v == name:
                         dev_position = index
                         break
-                for n in range(1, 97):
+                for n in range(1, total_num):
                     # margin_data = margin_table.getColumsData(str(n), table_col_name)[0]['data']
                     # 优化设定值
                     opt = margin_data[2+n]['data'][dev_position]
@@ -145,7 +160,7 @@ class Riqian(RequestHandler):
                     sum_data_tb = engine.getTable('statics_crv')
                     sum_col_name = sum_data_tb.getAllColNames()
                     sum_data = sum_data_tb.getColumsData('name', sum_col_name)
-                    for m in range(1, 97):
+                    for m in range(1, total_num):
                         wind_opt = sum_data[2 + m]['data'][0]  # 新能源优化设定值
                         wind_fur = sum_data[2 + m]['data'][1]  # 新能源预测均值
                         wind_plb = sum_data[2 + m]['data'][2]  # 新能源计划区间下限
@@ -160,7 +175,7 @@ class Riqian(RequestHandler):
                     sum_col_name = sum_data_tb.getAllColNames()
                     sum_data = sum_data_tb.getColumsData('name', sum_col_name)
 
-                    for m in range(1, 97):
+                    for m in range(1, total_num):
                         power_opt = sum_data[2 + m]['data'][4]  # 传统机组优化设定值
                         power_plb = sum_data[2 + m]['data'][5]  # 传统机计划区间下限
                         power_pub = sum_data[2 + m]['data'][6]  # 传统机计划区间上限
@@ -169,7 +184,7 @@ class Riqian(RequestHandler):
                         res_data['power_plb'].append(power_plb)
                         res_data['power_pub'].append(power_pub)
                 else:
-                    for n in range(1, 97):
+                    for n in range(1, total_num):
                         if _type == 'wind':
                             wind_opt = unit_crt_data[2+n]['data'][dev_position]
                             wind_pub = unit_crt_data[2+n]['data'][dev_position + 1]

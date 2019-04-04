@@ -6,7 +6,7 @@
  @Description:
  */
 import {JetView} from "webix-jet";
-import {option6, option7, option8, option9, readPowerData} from "../models/data";
+import {option6, option7, option8, option9, readPowerData, timesData} from "../models/data";
 import echarts from "echarts";
 import "models/walden.js";
 
@@ -17,7 +17,7 @@ let getData = function(dt, type, name) {
         if (type === "basic") {
             $$("gen:cost").define("label", '运行成本：'+parseFloat(res.gen_cost).toFixed(2));
             $$("gen:cost").refresh();
-            $$("wind").define("label", '弃风指标：'+parseFloat(res.wind).toFixed(2));
+            $$("wind").define("label", '弃风风险：'+parseFloat(res.wind).toFixed(2));
             $$("wind").refresh();
             $$("spin").define("label", '旋备成本：'+parseFloat(res.spin).toFixed(2));
             $$("spin").refresh();
@@ -41,13 +41,19 @@ let getData = function(dt, type, name) {
             e1.setOption({
                 legend: {top: 20, data: ["优化设定值", "预测均值", "计划区间上限", "计划区间下限"]},
                 series: [
-                    {data: res.wind_opt},
-                    {data: res.wind_fur},
-                    {data: res.wind_pub},
-                    {data: res.wind_plb}
+                    {data: timesData(res.wind_opt, 100)},
+                    {data: timesData(res.wind_fur, 100)},
+                    {data: timesData(res.wind_pub, 100)},
+                    {data: timesData(res.wind_plb, 100)}
                 ]
             });
-            e2.setOption({series: [{data: res.power_opt},{data: res.power_pub},{data: res.power_plb}]});
+            e2.setOption({
+                series: [
+                    {data: timesData(res.power_opt, 100)},
+                    {data: timesData(res.power_pub, 100)},
+                    {data: timesData(res.power_plb, 100)}
+                ]
+            });
             e3.setOption({series: [{data: []},{data: []},{data: []},{data: []},{data: []}]});
         }
         if (type === "wind") {
@@ -57,10 +63,10 @@ let getData = function(dt, type, name) {
                 e1.setOption({
                     legend: {top: 20, data: ["优化设定值", "预测均值", "计划区间上限", "计划区间下限"]},
                     series: [
-                        {data: res.wind_opt},
-                        {data: res.wind_fur},
-                        {data: res.wind_pub},
-                        {data: res.wind_plb}
+                        {data: timesData(res.wind_opt, 100)},
+                        {data: timesData(res.wind_fur, 100)},
+                        {data: timesData(res.wind_pub, 100)},
+                        {data: timesData(res.wind_plb, 100)}
                     ]
                 });
             }
@@ -73,35 +79,35 @@ let getData = function(dt, type, name) {
                             name: "优化设定值",
                             type: "line",
                             lineStyle: {width: 3},
-                            data: res.wind_opt
+                            data: timesData(res.wind_opt, 100)
                         },
                         {
                             name: "计划区间上限",
                             type: "line",
                             lineStyle: {width: 3},
                             areaStyle: {origin: 'start', opacity: 0.3},
-                            data: res.wind_pub
+                            data: timesData(res.wind_pub, 100)
                         },
                         {
                             name: "计划区间下限",
                             type: "line",
                             lineStyle: {width: 3},
                             areaStyle: {origin: 'start', color: '#146499', opacity: 1},
-                            data: res.wind_plb
+                            data: timesData(res.wind_plb, 100)
                         },
                         {
                             name: "预测上限",
                             type: "line",
                             lineStyle: {width: 3},
                             areaStyle: {origin: 'start', opacity: 0.3},
-                            data: res.wind_cub
+                            data: timesData(res.wind_cub, 100)
                         },
                         {
                             name: "预测下限",
                             type: "line",
                             lineStyle: {width: 3},
                             areaStyle: {origin: 'start', color: '#146499', opacity: 1},
-                            data: res.wind_clb
+                            data: timesData(res.wind_clb, 100)
                         }
                     ]
                 });
@@ -111,7 +117,13 @@ let getData = function(dt, type, name) {
             let devName = $$('power:dev').getSelectedItem().value;
             if (devName === '总和') {
                 e2.setOption(option7, true);
-                e2.setOption({series: [{data: res.power_opt},{data: res.power_pub},{data: res.power_plb}]});
+                e2.setOption({
+                    series: [
+                        {data: timesData(res.power_opt, 100)},
+                        {data: timesData(res.power_pub, 100)},
+                        {data: timesData(res.power_plb, 100)}
+                    ]
+                });
             }
             else {
                 e2.setOption({title: {text: "传统机组"},series: [{data: res.power_opt},{data: res.power_pub},{data: res.power_plb}]});
@@ -119,16 +131,16 @@ let getData = function(dt, type, name) {
         }
         if (type === "margin") {
             e3.setOption({series: [
-                    {data: res.margin_opt},
-                    {data: res.margin_pub},
-                    {data: res.margin_plb},
-                    {data: res.margin_max},
-                    {data: res.margin_min},
+                    {data: timesData(res.margin_opt, 100)},
+                    {data: timesData(res.margin_pub, 100)},
+                    {data: timesData(res.margin_plb, 100)},
+                    {data: timesData(res.margin_max, 100)},
+                    {data: timesData(res.margin_min, 100)},
                 ]
             });
         }
         if (type === 'equ') {
-            e4.setOption({series: [{data: res.equ_opt}]});
+            e4.setOption({series: [{data: timesData(res.equ_opt, 100)}]});
         }
         if (res.code !== 0){
             console.log(res.msg);
@@ -169,7 +181,7 @@ export default class PowerPlan extends JetView{
                         {view: "label", label: "计算用时", css: "label label-2"},
                         {view: "button", label: "启动计算", width: 120, align: "center", css: "button-normal"},
                         {view: "label", label: "运行成本：", css: "label", id: "gen:cost"},
-                        {view: "label", label: "弃风指标：", css: "label", id: "wind"},
+                        {view: "label", label: "弃风风险：", css: "label", id: "wind"},
                         {view: "label", label: "旋备成本：", css: "label", id: "spin"},
                         {view: "label", label: "断面指标：", css: "label", id: "margin"}
                     ]
