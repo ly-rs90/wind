@@ -123,22 +123,35 @@ class Riqian(RequestHandler):
                 margin_data = margin_table.getColumsData('name', table_col_name)
 
                 dev_position = 0
+                num = 0
                 for index, v in enumerate(margin_data[0]['data']):
                     if v == name:
                         dev_position = index
-                        break
+                        num += 1
+
+                if num > 0:
+                    dev_position -= num - 1
+
+                dev_name = margin_data[0]['data']
+                dev_type = margin_data[2]['data']
                 for n in range(1, total_num):
                     # margin_data = margin_table.getColumsData(str(n), table_col_name)[0]['data']
-                    # 优化设定值
-                    opt = margin_data[2+n]['data'][dev_position]
-                    # 计划下限
-                    plb = margin_data[2+n]['data'][dev_position + 1]
-                    # 计划上限
-                    pub = margin_data[2+n]['data'][dev_position + 2]
-                    # 上限
-                    p_max = margin_data[2+n]['data'][dev_position + 3]
-                    # 下限
-                    p_min = margin_data[2+n]['data'][dev_position + 4]
+                    opt = ''        # 优化设定值
+                    plb = ''        # 计划下限
+                    pub = ''        # 计划上限
+                    p_max = ''      # 上限
+                    p_min = ''      # 下限
+                    for m in range(num):
+                        if dev_name[dev_position+m] == name and dev_type[dev_position+m] == 'popt':
+                            opt = margin_data[2+n]['data'][dev_position+m]
+                        if dev_name[dev_position+m] == name and dev_type[dev_position+m] == 'plb':
+                            plb = margin_data[2+n]['data'][dev_position+m]
+                        if dev_name[dev_position+m] == name and dev_type[dev_position+m] == 'pub':
+                            pub = margin_data[2+n]['data'][dev_position+m]
+                        if dev_name[dev_position+m] == name and dev_type[dev_position+m] == 'pmax':
+                            p_max = margin_data[2+n]['data'][dev_position+m]
+                        if dev_name[dev_position+m] == name and dev_type[dev_position+m] == 'pmin':
+                            p_min = margin_data[2+n]['data'][dev_position+m]
                     res_data['margin_opt'].append(opt)
                     res_data['margin_plb'].append(plb)
                     res_data['margin_pub'].append(pub)
@@ -151,10 +164,13 @@ class Riqian(RequestHandler):
                 unit_crt_data = unit_crt_table.getColumsData('name', table_col_name)
 
                 dev_position = 0
+                num = 0
                 for index, v in enumerate(unit_crt_data[0]['data']):
                     if v == name:
                         dev_position = index
-                        break
+                        num += 1
+                if num > 0:
+                    dev_position -= num - 1
 
                 if name == '总和' and _type == 'wind':
                     sum_data_tb = engine.getTable('statics_crv')
@@ -184,22 +200,42 @@ class Riqian(RequestHandler):
                         res_data['power_plb'].append(power_plb)
                         res_data['power_pub'].append(power_pub)
                 else:
+                    dev_name = unit_crt_data[0]['data']
+                    dev_type = unit_crt_data[2]['data']
                     for n in range(1, total_num):
                         if _type == 'wind':
-                            wind_opt = unit_crt_data[2+n]['data'][dev_position]
-                            wind_pub = unit_crt_data[2+n]['data'][dev_position + 1]
-                            wind_plb = unit_crt_data[2+n]['data'][dev_position + 2]
-                            wind_cub = unit_crt_data[2+n]['data'][dev_position + 3]
-                            wind_clb = unit_crt_data[2+n]['data'][dev_position + 4]
+                            wind_opt = ''
+                            wind_pub = ''
+                            wind_plb = ''
+                            wind_cub = ''
+                            wind_clb = ''
+                            for m in range(num):
+                                if dev_name[dev_position + m] == name and dev_type[dev_position + m] == 'popt':
+                                    wind_opt = unit_crt_data[2 + n]['data'][dev_position + m]
+                                if dev_name[dev_position + m] == name and dev_type[dev_position + m] == 'ppub':
+                                    wind_pub = unit_crt_data[2 + n]['data'][dev_position + m]
+                                if dev_name[dev_position + m] == name and dev_type[dev_position + m] == 'pplb':
+                                    wind_plb = unit_crt_data[2 + n]['data'][dev_position + m]
+                                if dev_name[dev_position + m] == name and dev_type[dev_position + m] == 'pcub':
+                                    wind_cub = unit_crt_data[2 + n]['data'][dev_position + m]
+                                if dev_name[dev_position + m] == name and dev_type[dev_position + m] == 'pclb':
+                                    wind_clb = unit_crt_data[2 + n]['data'][dev_position + m]
                             res_data['wind_opt'].append(wind_opt)
                             res_data['wind_pub'].append(wind_pub)
                             res_data['wind_plb'].append(wind_plb)
                             res_data['wind_cub'].append(wind_cub)
                             res_data['wind_clb'].append(wind_clb)
                         if _type == 'power':
-                            power_opt = unit_crt_data[2 + n]['data'][dev_position]
-                            power_pub = unit_crt_data[2 + n]['data'][dev_position + 1]
-                            power_plb = unit_crt_data[2 + n]['data'][dev_position + 2]
+                            power_opt = ''
+                            power_pub = ''
+                            power_plb = ''
+                            for m in range(num):
+                                if dev_name[dev_position + m] == name and dev_type[dev_position + m] == 'popt':
+                                    power_opt = unit_crt_data[2 + n]['data'][dev_position + m]
+                                if dev_name[dev_position + m] == name and dev_type[dev_position + m] == 'ppub':
+                                    power_pub = unit_crt_data[2 + n]['data'][dev_position + m]
+                                if dev_name[dev_position + m] == name and dev_type[dev_position + m] == 'pplb':
+                                    power_plb = unit_crt_data[2 + n]['data'][dev_position + m]
                             res_data['power_opt'].append(power_opt)
                             res_data['power_pub'].append(power_pub)
                             res_data['power_plb'].append(power_plb)

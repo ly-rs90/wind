@@ -1,6 +1,6 @@
 <sys>
 @   start_pt     end_pt     mins             gencost         windcurtailcost     basiccost       regulationcost     spin_reserve_value      tie_margin     
-#   0            96         15               42984.71180     8.31486             42993.07059     1952.07986         0                      0               
+#   1            96         15               42984.71180     8.31486             42993.07059     1952.07986         0                      0               
 </sys>
 <unit_dev>
 @   name                                  type           
