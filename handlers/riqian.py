@@ -20,7 +20,8 @@ class Riqian(RequestHandler):
             'wind_dev': [], 'power_dev': [], 'margin_dev': [], 'equ_dev': [], 'margin_opt': [],
             'margin_plb': [], 'margin_pub': [], 'margin_max': [], 'margin_min': [],
             'wind_opt': [], 'wind_plb': [], 'wind_pub': [], 'wind_fur': [], 'wind_cub': [], 'wind_clb': [],
-            'power_opt': [], 'power_plb': [], 'power_pub': [], 'equ_opt': [], 'start': 1, 'end': 96, 'interval': 15
+            'power_opt': [], 'power_plb': [], 'power_pub': [], 'equ_opt': [], 'start': 1, 'end': 96, 'interval': 15,
+            'es_dev': [], 'es_opt': [], 'es_cap': []
         }
         _date = self.get_argument('date')
         _type = self.get_argument('type', '')
@@ -114,6 +115,13 @@ class Riqian(RequestHandler):
                                 res_data['wind_dev'].append({'value': unit_dev[1]['data'][index]})
                             if dev == '等值机组':
                                 res_data['equ_dev'].append({'value': unit_dev[1]['data'][index]})
+                    elif tb == 'es_crv':
+                        es_dev = table.getColumsData('name', table_col_name)
+                        es = set()
+                        for dev in es_dev[0]['data']:
+                            es.add(dev)
+                        for name in es:
+                            res_data['es_dev'].append({'value': name})
                     else:
                         continue
             elif _type == 'margin':     # 获取断面数据
@@ -157,6 +165,35 @@ class Riqian(RequestHandler):
                     res_data['margin_pub'].append(pub)
                     res_data['margin_max'].append(p_max)
                     res_data['margin_min'].append(p_min)
+            elif _type == 'es':
+                name = self.get_argument('name', '')
+                es_table = engine.getTable('es_crv')
+                table_col_name = es_table.getAllColNames()
+                es_data = es_table.getColumsData('name', table_col_name)
+
+                dev_position = 0
+                num = 0
+                for index, v in enumerate(es_data[0]['data']):
+                    if v == name:
+                        dev_position = index
+                        num += 1
+
+                if num > 0:
+                    dev_position -= num - 1
+
+                dev_name = es_data[0]['data']
+                dev_type = es_data[2]['data']
+
+                for n in range(1, total_num):
+                    opt = ''    # 优化设定值
+                    cap = ''    # 容量
+                    for m in range(num):
+                        if dev_name[dev_position+m] == name and dev_type[dev_position+m] == 'popt':
+                            opt = es_data[2+n]['data'][dev_position+m]
+                        if dev_name[dev_position+m] == name and dev_type[dev_position+m] == 'cap':
+                            cap = es_data[2+n]['data'][dev_position+m]
+                    res_data['es_opt'].append(opt)
+                    res_data['es_cap'].append(cap)
             elif _type == 'wind' or _type == 'power' or _type == 'equ':
                 name = self.get_argument('name', '')
                 unit_crt_table = engine.getTable('unit_crv')
