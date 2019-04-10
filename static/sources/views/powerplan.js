@@ -6,11 +6,11 @@
  @Description:
  */
 import {JetView} from "webix-jet";
-import {option6, option7, option8, option9, readPowerData, timesData} from "../models/data";
+import {option6, option7, option8, option9, option11, readPowerData, timesData} from "../models/data";
 import echarts from "echarts";
 import "models/walden.js";
 
-let e1, e2, e3, e4;
+let e1, e2, e3, e4, e5;
 let getData = function(dt, type, name) {
     readPowerData(dt, type, name).then(function (r) {
         let res = r.json();
@@ -36,25 +36,36 @@ let getData = function(dt, type, name) {
 
             $$("equ:dev").clearAll();
             $$("equ:dev").define("data", res.equ_dev);
+
+            $$("agc:dev").clearAll();
+            $$("agc:dev").define("data", res.agc_dev);
             e1.setOption(option6, true);
             e2.setOption(option7, true);
             e1.setOption({
                 legend: {top: 20, data: ["优化设定值", "预测均值", "计划区间上限", "计划区间下限"]},
                 series: [
-                    {data: timesData(res.wind_opt, 100)},
-                    {data: timesData(res.wind_fur, 100)},
-                    {data: timesData(res.wind_pub, 100)},
-                    {data: timesData(res.wind_plb, 100)}
+                    {data: timesData(res.wind_opt, 1)},
+                    {data: timesData(res.wind_fur, 1)},
+                    {data: timesData(res.wind_pub, 1)},
+                    {data: timesData(res.wind_plb, 1)}
                 ]
             });
             e2.setOption({
                 series: [
-                    {data: timesData(res.power_opt, 100)},
-                    {data: timesData(res.power_pub, 100)},
-                    {data: timesData(res.power_plb, 100)}
+                    {data: timesData(res.power_opt, 1)},
+                    {data: timesData(res.power_pub, 1)},
+                    {data: timesData(res.power_plb, 1)}
                 ]
             });
             e3.setOption({series: [{data: []},{data: []},{data: []},{data: []},{data: []}]});
+            e5.setOption(option11, true);
+            e5.setOption({
+                series: [
+                    {data: res.agc_opt},
+                    {data: res.agc_pub},
+                    {data: res.agc_plb}
+                ]
+            });
         }
         if (type === "wind") {
             let devName = $$('wind:dev').getSelectedItem().value;
@@ -63,51 +74,57 @@ let getData = function(dt, type, name) {
                 e1.setOption({
                     legend: {top: 20, data: ["优化设定值", "预测均值", "计划区间上限", "计划区间下限"]},
                     series: [
-                        {data: timesData(res.wind_opt, 100)},
-                        {data: timesData(res.wind_fur, 100)},
-                        {data: timesData(res.wind_pub, 100)},
-                        {data: timesData(res.wind_plb, 100)}
+                        {data: timesData(res.wind_opt, 1)},
+                        {data: timesData(res.wind_fur, 1)},
+                        {data: timesData(res.wind_pub, 1)},
+                        {data: timesData(res.wind_plb, 1)}
                     ]
                 });
             }
             else {
                 e1.setOption({
                     title: {text: "新能源机组"},
-                    legend: {top: 20, data: ["优化设定值", "计划区间上限", "计划区间下限", "预测上限", "预测下限"]},
+                    legend: {top: 20, data: ["优化设定值", "计划区间上限", "计划区间下限", "预测上限", "预测下限", "预测值"]},
                     series: [
                         {
                             name: "优化设定值",
                             type: "line",
                             lineStyle: {width: 3},
-                            data: timesData(res.wind_opt, 100)
+                            data: timesData(res.wind_opt, 1)
                         },
                         {
                             name: "计划区间上限",
                             type: "line",
                             lineStyle: {width: 3},
                             areaStyle: {origin: 'start', opacity: 0.3},
-                            data: timesData(res.wind_pub, 100)
+                            data: timesData(res.wind_pub, 1)
                         },
                         {
                             name: "计划区间下限",
                             type: "line",
                             lineStyle: {width: 3},
                             areaStyle: {origin: 'start', color: '#146499', opacity: 1},
-                            data: timesData(res.wind_plb, 100)
+                            data: timesData(res.wind_plb, 1)
                         },
                         {
                             name: "预测上限",
                             type: "line",
                             lineStyle: {width: 3},
                             areaStyle: {origin: 'start', opacity: 0.3},
-                            data: timesData(res.wind_cub, 100)
+                            data: timesData(res.wind_cub, 1)
                         },
                         {
                             name: "预测下限",
                             type: "line",
                             lineStyle: {width: 3},
                             areaStyle: {origin: 'start', color: '#146499', opacity: 1},
-                            data: timesData(res.wind_clb, 100)
+                            data: timesData(res.wind_clb, 1)
+                        },
+                        {
+                            name: "预测值",
+                            type: "line",
+                            lineStyle: {width: 3},
+                            data: timesData(res.wind_fur, 1)
                         }
                     ]
                 });
@@ -119,28 +136,105 @@ let getData = function(dt, type, name) {
                 e2.setOption(option7, true);
                 e2.setOption({
                     series: [
-                        {data: timesData(res.power_opt, 100)},
-                        {data: timesData(res.power_pub, 100)},
-                        {data: timesData(res.power_plb, 100)}
+                        {data: timesData(res.power_opt, 1)},
+                        {data: timesData(res.power_pub, 1)},
+                        {data: timesData(res.power_plb, 1)}
                     ]
                 });
             }
             else {
-                e2.setOption({title: {text: "传统机组"},series: [{data: res.power_opt},{data: res.power_pub},{data: res.power_plb}]});
+                e2.setOption({
+                    title: {text: "传统机组"},
+                    legend: {top: 20, data: ["优化设定值", "计划区间上限", "计划区间下限", "预测值"]},
+                    series: [
+                        {
+                            name: "优化设定值",
+                            type: "line",
+                            lineStyle: {width: 3},
+                            data: res.power_opt
+                        },
+                        {
+                            name: "计划区间上限",
+                            type: "line",
+                            lineStyle: {width: 3},
+                            areaStyle: {origin: 'start'},
+                            data: res.power_pub
+                        },
+                        {
+                            name: "计划区间下限",
+                            type: "line",
+                            lineStyle: {width: 3},
+                            areaStyle: {color: '#146499', opacity: 1, origin: 'start'},
+                            data: res.power_plb
+                        },
+                        {
+                            name: "预测值",
+                            type: "line",
+                            lineStyle: {width: 3},
+                            data: res.power_fur
+                        }
+                    ]
+                });
             }
         }
         if (type === "margin") {
             e3.setOption({series: [
-                    {data: timesData(res.margin_opt, 100)},
-                    {data: timesData(res.margin_pub, 100)},
-                    {data: timesData(res.margin_plb, 100)},
-                    {data: timesData(res.margin_max, 100)},
-                    {data: timesData(res.margin_min, 100)},
+                    {data: timesData(res.margin_opt, 1)},
+                    {data: timesData(res.margin_pub, 1)},
+                    {data: timesData(res.margin_plb, 1)},
+                    {data: timesData(res.margin_max, 1)},
+                    {data: timesData(res.margin_min, 1)},
                 ]
             });
         }
         if (type === 'equ') {
-            e4.setOption({series: [{data: timesData(res.equ_opt, 100)}]});
+            e4.setOption({series: [{data: res.equ_opt}, {data: res.equ_fur}]});
+        }
+        if (type === 'agc') {
+            let devName = $$('agc:dev').getSelectedItem().value;
+            if (devName === '总和') {
+                e5.setOption(option11, true);
+                e5.setOption({
+                    series: [
+                        {data: res.agc_opt},
+                        {data: res.agc_pub},
+                        {data: res.agc_plb}
+                    ]
+                });
+            }
+            else {
+                e5.setOption({
+                    legend: {top: 20, data: ["优化设定值", "计划区间上限", "计划区间下限", "预测值"]},
+                    series: [
+                        {
+                            name: "优化设定值",
+                            type: "line",
+                            lineStyle: {width: 3},
+                            data: res.agc_opt
+                        },
+                        {
+                            name: "计划区间上限",
+                            type: "line",
+                            lineStyle: {width: 3},
+                            areaStyle: {origin: 'start', opacity: 0.3},
+                            data: res.agc_pub
+                        },
+                        {
+                            name: "计划区间下限",
+                            type: "line",
+                            lineStyle: {width: 3},
+                            areaStyle: {color: '#146499', opacity: 1, origin: 'start'},
+                            data: res.agc_plb
+                        },
+                        {
+                            name: "预测值",
+                            type: "line",
+                            lineStyle: {width: 3},
+                            data: res.agc_fur
+                        }
+                    ]
+                });
+            }
         }
         if (res.code !== 0){
             console.log(res.msg);
@@ -366,6 +460,55 @@ export default class PowerPlan extends JetView{
                                                         ]
                                                     }
                                                 ]
+                                            },
+                                            {
+                                                type: 'wide', id: 'row1',
+                                                rows: [
+                                                    {
+                                                        responsive: 'row1', type: 'wide',
+                                                        cols: [
+                                                            {
+                                                                css: 'panel',
+                                                                cols: [
+                                                                    {
+                                                                        width: 200, css: "panel-1", minHeight: 270,
+                                                                        rows: [
+                                                                            {
+                                                                                view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
+                                                                                css: 'search',
+                                                                                on: {
+                                                                                    onTimedKeyPress: function () {
+                                                                                        let dev = $$("agc:dev");
+                                                                                        let str = this.getValue();
+                                                                                        dev.filter(function(obj){
+                                                                                            return obj.value.indexOf(str) !== -1;
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {height: 5},
+                                                                            {
+                                                                                view: "list", select: 1, borderless: 1, data: [],
+                                                                                scroll: "y", css: "panel-1 list", id: "agc:dev",
+                                                                                tooltip: function (obj) {
+                                                                                    return obj.value;
+                                                                                },
+                                                                                on: {
+                                                                                    onItemClick: function (id) {
+                                                                                        let item = $$("agc:dev").getItem(id);
+                                                                                        let d = $$("date").getValue().split(" ")[0].replace(/-/g, "");
+                                                                                        getData(d, "agc", item.value);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {id: "chart5", minWidth: 600}
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
                                             }
                                         ]
                                     }
@@ -386,17 +529,20 @@ export default class PowerPlan extends JetView{
         e2 = echarts.init($$("chart2").getNode(), "walden");
         e3 = echarts.init($$("chart3").getNode(), "walden");
         e4 = echarts.init($$("chart4").getNode(), "walden");
+        e5 = echarts.init($$("chart5").getNode(), "walden");
         window.onresize = function() {
             e1.resize();
             e2.resize();
             e3.resize();
             e4.resize();
+            e5.resize();
         };
         this.on(this.app, "toggle:menu", function () {
             e1.resize();
             e2.resize();
             e3.resize();
             e4.resize();
+            e5.resize();
         });
 
         setTimeout(function () {
@@ -408,6 +554,8 @@ export default class PowerPlan extends JetView{
             e3.setOption(option8);
             e4.resize();
             e4.setOption(option9);
+            e5.resize();
+            e5.setOption(option11);
             getData($$("date").getValue().split(" ")[0].replace(/-/g, ""), "basic");
         });
     }

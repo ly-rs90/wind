@@ -312,10 +312,11 @@ export const option8 = {
 export const option9 = {
     title: {text: "等值机组"},
     grid: {x: 60, y: 60, x2: 50, y2: 40},
-    legend: {top: 20, data: ["优化设定值"]},
+    legend: {top: 20, data: ["优化设定值", "预测值"]},
     tooltip: {trigger: "axis"},
     xAxis: {
-        name: "时间", data: (function () {
+        name: "时间",
+        data: (function () {
             let xData = [];
             for (let i=1;i<169;i++){
                 xData.push(i);
@@ -330,6 +331,112 @@ export const option9 = {
             name: "优化设定值",
             type: "line",
             lineStyle: {width: 3},
+            data: []
+        },
+        {
+            name: "预测值",
+            type: "line",
+            lineStyle: {width: 3},
+            data: []
+        }
+    ]
+};
+export const option10 = {
+    title: {text: "储能设备"},
+    grid: {x: 60, y: 60, x2: 50, y2: 40},
+    legend: {top: 20, data: ["优化设定值", "容量"]},
+    tooltip: {trigger: "axis"},
+    xAxis: {
+        name: "时间", data: getXCoording(), boundaryGap: false,
+        splitLine: {interval: 3, show: false}, nameLocation: 'center',
+        nameGap: 25
+    },
+    yAxis: [{name: "兆瓦", nameGap: 8}, {name: "兆瓦时", nameGap: 8, splitLine: {show: false}}],
+    series: [
+        {
+            name: "优化设定值",
+            type: "line",
+            lineStyle: {width: 3},
+            data: []
+        },
+        {
+            name: "容量",
+            type: "line",
+            yAxisIndex: 1,
+            lineStyle: {width: 3},
+            areaStyle: {opacity: 0.3},
+            data: []
+        }
+    ]
+};
+export const option11 = {
+    title: {text: "AGC机组"},
+    grid: {x: 60, y: 60, x2: 50, y2: 40},
+    legend: {top: 20, data: ["优化设定值", "计划区间上限", "计划区间下限"]},
+    tooltip: {trigger: "axis"},
+    xAxis: {name: "时间",
+        data: (function () {
+            let x = [];
+            for (let i = 1; i <= 168; i++) {
+                x.push(i);
+            }
+            return x;
+        })(),
+        boundaryGap: false, z: 3, splitLine: {show: false}
+    },
+    yAxis: [{name: "兆瓦", nameGap: 8, z: 3, scale: true}, {}],
+    series: [
+        {
+            name: "优化设定值",
+            type: "line",
+            lineStyle: {width: 3},
+            data: []
+        },
+        {
+            name: "计划区间上限",
+            type: "line",
+            lineStyle: {width: 3},
+            areaStyle: {origin: 'start', opacity: 0.3},
+            data: []
+        },
+        {
+            name: "计划区间下限",
+            type: "line",
+            lineStyle: {width: 3},
+            areaStyle: {color: '#146499', opacity: 1, origin: 'start'},
+            data: []
+        }
+    ]
+};
+export const option12 = {
+    title: {text: "AGC机组"},
+    grid: {x: 60, y: 60, x2: 50, y2: 40},
+    legend: {top: 20, data: ["优化设定值", "计划区间上限", "计划区间下限"]},
+    tooltip: {trigger: "axis"},
+    xAxis: {name: "时间",
+        data: getXCoording(),
+        boundaryGap: false, z: 3, splitLine: {show: false}
+    },
+    yAxis: [{name: "兆瓦", nameGap: 8, z: 3, scale: true}, {}],
+    series: [
+        {
+            name: "优化设定值",
+            type: "line",
+            lineStyle: {width: 3},
+            data: []
+        },
+        {
+            name: "计划区间上限",
+            type: "line",
+            lineStyle: {width: 3},
+            areaStyle: {origin: 'start', opacity: 0.3},
+            data: []
+        },
+        {
+            name: "计划区间下限",
+            type: "line",
+            lineStyle: {width: 3},
+            areaStyle: {color: '#146499', opacity: 1, origin: 'start'},
             data: []
         }
     ]

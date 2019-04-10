@@ -1,9 +1,9 @@
 import {JetView} from "webix-jet";
-import {option1, option2, option3, option4, option10, readData, getXCoording, timesData} from "../models/data";
+import {option1, option2, option3, option4, option10, option12, readData, getXCoording, timesData} from "../models/data";
 import echarts from "echarts";
 import "models/walden.js";
 
-let e1, e2, e3, e4, e5;
+let e1, e2, e3, e4, e5, e6;
 let getData = function(dt, type, name) {
     readData(dt, type, name).then(function (r) {
         let res = r.json();
@@ -33,8 +33,14 @@ let getData = function(dt, type, name) {
             $$("es:dev").clearAll();
             $$("es:dev").define("data", res.es_dev);
 
+            $$("agc:dev").clearAll();
+            $$("agc:dev").define("data", res.agc_dev);
+
             e1.setOption(option1, true);
             e2.setOption(option2, true);
+            e3.setOption(option3, true);
+            e4.setOption(option4, true);
+            e5.setOption(option10, true);
 
             let dataLen = res.wind_opt.length;
             let size = dataLen > 1?1: 8;
@@ -42,10 +48,10 @@ let getData = function(dt, type, name) {
                 legend: {top: 20, data: ["优化设定值", "预测均值", "计划区间上限", "计划区间下限"]},
                 xAxis: {data: getXCoording(24*60/res.interval, res.start - 1, res.end - res.start + 1)},
                 series: [
-                    {data: timesData(res.wind_opt, 100), symbolSize: size},
-                    {data: timesData(res.wind_fur, 100), symbolSize: size},
-                    {data: timesData(res.wind_pub, 100), symbolSize: size},
-                    {data: timesData(res.wind_plb, 100), symbolSize: size}
+                    {data: timesData(res.wind_opt, 1), symbolSize: size},
+                    {data: timesData(res.wind_fur, 1), symbolSize: size},
+                    {data: timesData(res.wind_pub, 1), symbolSize: size},
+                    {data: timesData(res.wind_plb, 1), symbolSize: size}
                 ]
             });
             dataLen = res.power_opt.length;
@@ -70,10 +76,10 @@ let getData = function(dt, type, name) {
                     legend: {top: 20, data: ["优化设定值", "预测均值", "计划区间上限", "计划区间下限"]},
                     xAxis: {data: getXCoording(24*60/res.interval, res.start - 1, res.end - res.start + 1)},
                     series: [
-                        {data: timesData(res.wind_opt, 100), symbolSize: size},
-                        {data: timesData(res.wind_fur, 100), symbolSize: size},
-                        {data: timesData(res.wind_pub, 100), symbolSize: size},
-                        {data: timesData(res.wind_plb, 100), symbolSize: size}
+                        {data: timesData(res.wind_opt, 1), symbolSize: size},
+                        {data: timesData(res.wind_fur, 1), symbolSize: size},
+                        {data: timesData(res.wind_pub, 1), symbolSize: size},
+                        {data: timesData(res.wind_plb, 1), symbolSize: size}
                     ]
                 });
             }
@@ -88,7 +94,7 @@ let getData = function(dt, type, name) {
                             type: "line",
                             lineStyle: {width: 3},
                             symbolSize: size,
-                            data: timesData(res.wind_opt, 100)
+                            data: timesData(res.wind_opt, 1)
                         },
                         {
                             name: "计划区间上限",
@@ -96,7 +102,7 @@ let getData = function(dt, type, name) {
                             lineStyle: {width: 3},
                             areaStyle: {origin: 'start', opacity: 0.3},
                             symbolSize: size,
-                            data: timesData(res.wind_pub, 100)
+                            data: timesData(res.wind_pub, 1)
                         },
                         {
                             name: "计划区间下限",
@@ -104,7 +110,7 @@ let getData = function(dt, type, name) {
                             lineStyle: {width: 3},
                             areaStyle: {origin: 'start', color: '#146499', opacity: 1},
                             symbolSize: size,
-                            data: timesData(res.wind_plb, 100)
+                            data: timesData(res.wind_plb, 1)
                         },
                         {
                             name: "预测上限",
@@ -112,7 +118,7 @@ let getData = function(dt, type, name) {
                             lineStyle: {width: 3},
                             areaStyle: {origin: 'start', opacity: 0.3},
                             symbolSize: size,
-                            data: timesData(res.wind_cub, 100)
+                            data: timesData(res.wind_cub, 1)
                         },
                         {
                             name: "预测下限",
@@ -120,7 +126,7 @@ let getData = function(dt, type, name) {
                             lineStyle: {width: 3},
                             areaStyle: {origin: 'start', color: '#146499', opacity: 1},
                             symbolSize: size,
-                            data: timesData(res.wind_clb, 100)
+                            data: timesData(res.wind_clb, 1)
                         }
                     ]
                 });
@@ -135,9 +141,9 @@ let getData = function(dt, type, name) {
                 e2.setOption({
                     xAxis: {data: getXCoording(24*60/res.interval, res.start - 1, res.end - res.start + 1)},
                     series: [
-                        {data: timesData(res.power_opt, 100), symbolSize: size},
-                        {data: timesData(res.power_pub, 100), symbolSize: size},
-                        {data: timesData(res.power_plb, 100), symbolSize: size}
+                        {data: timesData(res.power_opt, 1), symbolSize: size},
+                        {data: timesData(res.power_pub, 1), symbolSize: size},
+                        {data: timesData(res.power_plb, 1), symbolSize: size}
                     ]
                 });
             }
@@ -146,9 +152,9 @@ let getData = function(dt, type, name) {
                     title: {text: "传统机组"},
                     xAxis: {data: getXCoording(24*60/res.interval, res.start - 1, res.end - res.start + 1)},
                     series: [
-                        {data: timesData(res.power_opt, 100), symbolSize: size},
-                        {data: timesData(res.power_pub, 100), symbolSize: size},
-                        {data: timesData(res.power_plb, 100), symbolSize: size}
+                        {data: timesData(res.power_opt, 1), symbolSize: size},
+                        {data: timesData(res.power_pub, 1), symbolSize: size},
+                        {data: timesData(res.power_plb, 1), symbolSize: size}
                     ]
                 });
             }
@@ -159,11 +165,11 @@ let getData = function(dt, type, name) {
             e3.setOption({
                 xAxis: {data: getXCoording(24*60/res.interval, res.start - 1, res.end - res.start + 1)},
                 series: [
-                    {data: timesData(res.margin_opt, 100), symbolSize: size},
-                    {data: timesData(res.margin_pub, 100), symbolSize: size},
-                    {data: timesData(res.margin_plb, 100), symbolSize: size},
-                    {data: timesData(res.margin_max, 100), symbolSize: size},
-                    {data: timesData(res.margin_min, 100), symbolSize: size},
+                    {data: timesData(res.margin_opt, 1), symbolSize: size},
+                    {data: timesData(res.margin_pub, 1), symbolSize: size},
+                    {data: timesData(res.margin_plb, 1), symbolSize: size},
+                    {data: timesData(res.margin_max, 1), symbolSize: size},
+                    {data: timesData(res.margin_min, 1), symbolSize: size},
                 ]
             });
         }
@@ -172,7 +178,7 @@ let getData = function(dt, type, name) {
             let size = dataLen > 1?1: 8;
             e4.setOption({
                 xAxis: {data: getXCoording(24*60/res.interval, res.start - 1, res.end - res.start + 1)},
-                series: [{data: timesData(res.equ_opt, 100), symbolSize: size}]
+                series: [{data: timesData(res.equ_opt, 1), symbolSize: size}]
             });
         }
         if (type === 'es') {
@@ -181,10 +187,37 @@ let getData = function(dt, type, name) {
             e5.setOption({
                 xAxis: {data: getXCoording(24*60/res.interval, res.start - 1, res.end - res.start + 1)},
                 series: [
-                    {data: timesData(res.es_opt, 100), symbolSize: size},
-                    {data: timesData(res.es_cap, 100), symbolSize: size}
+                    {data: timesData(res.es_opt, 1), symbolSize: size},
+                    {data: timesData(res.es_cap, 1), symbolSize: size}
                 ]
             });
+        }
+        if (type === 'agc') {
+            let devName = $$('agc:dev').getSelectedItem().value;
+            let dataLen = res.end - res.start + 1;
+            let size = dataLen > 1?1: 8;
+            if (devName === '总和') {
+                e6.setOption(option12, true);
+                e6.setOption({
+                    xAxis: {data: getXCoording(24*60/res.interval, res.start - 1, res.end - res.start + 1)},
+                    series: [
+                        {data: timesData(res.agc_opt, 1), symbolSize: size},
+                        {data: timesData(res.agc_pub, 1), symbolSize: size},
+                        {data: timesData(res.agc_plb, 1), symbolSize: size}
+                    ]
+                });
+            }
+            else {
+                e6.setOption({
+                    title: {text: "AGC机组"},
+                    xAxis: {data: getXCoording(24*60/res.interval, res.start - 1, res.end - res.start + 1)},
+                    series: [
+                        {data: timesData(res.agc_opt, 1), symbolSize: size},
+                        {data: timesData(res.agc_pub, 1), symbolSize: size},
+                        {data: timesData(res.agc_plb, 1), symbolSize: size}
+                    ]
+                });
+            }
         }
         if (res.code !== 0){
             console.log(res.msg);
@@ -241,198 +274,262 @@ export default class Riqianyouhua extends JetView{
                                         type: "wide", id: 'a',
                                         rows: [
                                             {
-                                                css: "panel",
+                                                responsive: 'a', type: 'wide',
                                                 cols: [
                                                     {
-                                                        width: 200, css: "panel-1", minHeight: 300,
-                                                        rows: [
+                                                        css: "panel",
+                                                        cols: [
                                                             {
-                                                                view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
-                                                                css: 'search',
-                                                                on: {
-                                                                    onTimedKeyPress: function () {
-                                                                        let dev = $$("wind:dev");
-                                                                        let str = this.getValue();
-                                                                        dev.filter(function(obj){
-                                                                            return obj.value.indexOf(str) !== -1;
-                                                                        });
+                                                                width: 200, css: "panel-1", minHeight: 270,
+                                                                rows: [
+                                                                    {
+                                                                        view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
+                                                                        css: 'search',
+                                                                        on: {
+                                                                            onTimedKeyPress: function () {
+                                                                                let dev = $$("wind:dev");
+                                                                                let str = this.getValue();
+                                                                                dev.filter(function(obj){
+                                                                                    return obj.value.indexOf(str) !== -1;
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {height: 5},
+                                                                    {
+                                                                        view: "list", select: 1, borderless: 1, data: [],
+                                                                        tooltip: function (obj) {
+                                                                            return obj.value;
+                                                                        },
+                                                                        scroll: 'y', css: "panel-1 list", id: "wind:dev",
+                                                                        on: {
+                                                                            onItemClick: function (id) {
+                                                                                let item = $$("wind:dev").getItem(id);
+                                                                                let d = $$("date").getValue().split(" ")[0].replace(/-/g, "");
+                                                                                getData(d, "wind", item.value);
+                                                                            }
+                                                                        }
                                                                     }
-                                                                }
+                                                                ]
                                                             },
-                                                            {height: 5},
-                                                            {
-                                                                view: "list", select: 1, borderless: 1, data: [],
-                                                                tooltip: function (obj) {
-                                                                    return obj.value;
-                                                                },
-                                                                scroll: 'y', css: "panel-1 list", id: "wind:dev",
-                                                                on: {
-                                                                    onItemClick: function (id) {
-                                                                        let item = $$("wind:dev").getItem(id);
-                                                                        let d = $$("date").getValue().split(" ")[0].replace(/-/g, "");
-                                                                        getData(d, "wind", item.value);
-                                                                    }
-                                                                }
-                                                            }
+                                                            {id: "chart1", minWidth: 600}
                                                         ]
                                                     },
-                                                    {id: "chart1", minWidth: 600}
+                                                    {
+                                                        css: "panel",
+                                                        cols: [
+                                                            {
+                                                                width: 200, css: "panel-1", minHeight: 270,
+                                                                rows: [
+                                                                    {
+                                                                        view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
+                                                                        css: 'search',
+                                                                        on: {
+                                                                            onTimedKeyPress: function () {
+                                                                                let dev = $$("power:dev");
+                                                                                let str = this.getValue();
+                                                                                dev.filter(function(obj){
+                                                                                    return obj.value.indexOf(str) !== -1;
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {height: 5},
+                                                                    {
+                                                                        view: "list", select: 1, borderless: 1, data: [],
+                                                                        scroll: "y", css: "panel-1 list", id: "power:dev",
+                                                                        tooltip: function (obj) {
+                                                                            return obj.value;
+                                                                        },
+                                                                        on: {
+                                                                            onItemClick: function (id) {
+                                                                                let item = $$("power:dev").getItem(id);
+                                                                                let d = $$("date").getValue().split(" ")[0].replace(/-/g, "");
+                                                                                getData(d, "power", item.value);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {id: "chart2", minWidth: 600}
+                                                        ]
+                                                    }
                                                 ]
                                             },
                                             {
-                                                css: "panel",
-                                                cols: [
+                                                type: "wide", id: "row",
+                                                rows: [
                                                     {
-                                                        width: 200, css: "panel-1", minHeight: 300,
-                                                        rows: [
+                                                        responsive: 'row', type: 'wide',
+                                                        cols: [
                                                             {
-                                                                view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
-                                                                css: 'search',
-                                                                on: {
-                                                                    onTimedKeyPress: function () {
-                                                                        let dev = $$("equ:dev");
-                                                                        let str = this.getValue();
-                                                                        dev.filter(function(obj){
-                                                                            return obj.value.indexOf(str) !== -1;
-                                                                        });
-                                                                    }
-                                                                }
+                                                                css: "panel",
+                                                                cols: [
+                                                                    {
+                                                                        width: 200, css: "panel-1", minHeight: 270,
+                                                                        rows: [
+                                                                            {
+                                                                                view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
+                                                                                css: 'search',
+                                                                                on: {
+                                                                                    onTimedKeyPress: function () {
+                                                                                        let dev = $$("equ:dev");
+                                                                                        let str = this.getValue();
+                                                                                        dev.filter(function(obj){
+                                                                                            return obj.value.indexOf(str) !== -1;
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {height: 5},
+                                                                            {
+                                                                                view: "list", select: 1, borderless: 1, data: [],
+                                                                                scroll: "y", css: "panel-1 list", id: "equ:dev",
+                                                                                tooltip: function (obj) {
+                                                                                    return obj.value;
+                                                                                },
+                                                                                on: {
+                                                                                    onItemClick: function (id) {
+                                                                                        let item = $$("equ:dev").getItem(id);
+                                                                                        let d = $$("date").getValue().split(" ")[0].replace(/-/g, "");
+                                                                                        getData(d, "equ", item.value);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {id: "chart4", minWidth: 600}
+                                                                ]
                                                             },
-                                                            {height: 5},
                                                             {
-                                                                view: "list", select: 1, borderless: 1, data: [],
-                                                                scroll: "y", css: "panel-1 list", id: "equ:dev",
-                                                                tooltip: function (obj) {
-                                                                    return obj.value;
-                                                                },
-                                                                on: {
-                                                                    onItemClick: function (id) {
-                                                                        let item = $$("equ:dev").getItem(id);
-                                                                        let d = $$("date").getValue().split(" ")[0].replace(/-/g, "");
-                                                                        getData(d, "equ", item.value);
-                                                                    }
-                                                                }
+                                                                css: "panel",
+                                                                cols: [
+                                                                    {
+                                                                        width: 200, css: "panel-1", minHeight: 270,
+                                                                        rows: [
+                                                                            {
+                                                                                view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
+                                                                                css: 'search',
+                                                                                on: {
+                                                                                    onTimedKeyPress: function () {
+                                                                                        let dev = $$("margin:dev");
+                                                                                        let str = this.getValue();
+                                                                                        dev.filter(function(obj){
+                                                                                            return obj.value.indexOf(str) !== -1;
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {height: 5},
+                                                                            {
+                                                                                view: "list", select: 1, borderless: 1, css: "panel-1 list",
+                                                                                data: [], scroll: "y", id: "margin:dev",
+                                                                                tooltip: function (obj) {
+                                                                                    return obj.value;
+                                                                                },
+                                                                                on: {
+                                                                                    onItemClick: function (id) {
+                                                                                        let item = $$("margin:dev").getItem(id);
+                                                                                        let d = $$("date").getValue().split(" ")[0].replace(/-/g, "");
+                                                                                        getData(d, "margin", item.value);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {id: "chart3", minWidth: 600}
+                                                                ]
                                                             }
                                                         ]
-                                                    },
-                                                    {id: "chart4", minWidth: 600}
+                                                    }
                                                 ]
                                             },
                                             {
-                                                css: "panel",
-                                                cols: [
+                                                type: "wide", id: "row1",
+                                                rows: [
                                                     {
-                                                        width: 200, css: "panel-1", minHeight: 300,
-                                                        rows: [
+                                                        responsive: 'row1', type: 'wide',
+                                                        cols: [
                                                             {
-                                                                view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
-                                                                css: 'search',
-                                                                on: {
-                                                                    onTimedKeyPress: function () {
-                                                                        let dev = $$("power:dev");
-                                                                        let str = this.getValue();
-                                                                        dev.filter(function(obj){
-                                                                            return obj.value.indexOf(str) !== -1;
-                                                                        });
-                                                                    }
-                                                                }
+                                                                css: "panel",
+                                                                cols: [
+                                                                    {
+                                                                        width: 200, css: "panel-1", minHeight: 270,
+                                                                        rows: [
+                                                                            {
+                                                                                view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
+                                                                                css: 'search',
+                                                                                on: {
+                                                                                    onTimedKeyPress: function () {
+                                                                                        let dev = $$("es:dev");
+                                                                                        let str = this.getValue();
+                                                                                        dev.filter(function(obj){
+                                                                                            return obj.value.indexOf(str) !== -1;
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {height: 5},
+                                                                            {
+                                                                                view: "list", select: 1, borderless: 1, css: "panel-1 list",
+                                                                                data: [], scroll: "y", id: "es:dev",
+                                                                                tooltip: function (obj) {
+                                                                                    return obj.value;
+                                                                                },
+                                                                                on: {
+                                                                                    onItemClick: function (id) {
+                                                                                        let item = $$("es:dev").getItem(id);
+                                                                                        let d = $$("date").getValue().split(" ")[0].replace(/-/g, "");
+                                                                                        getData(d, "es", item.value);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {id: "chart5", minWidth: 600}
+                                                                ]
                                                             },
-                                                            {height: 5},
                                                             {
-                                                                view: "list", select: 1, borderless: 1, data: [],
-                                                                scroll: "y", css: "panel-1 list", id: "power:dev",
-                                                                tooltip: function (obj) {
-                                                                    return obj.value;
-                                                                },
-                                                                on: {
-                                                                    onItemClick: function (id) {
-                                                                        let item = $$("power:dev").getItem(id);
-                                                                        let d = $$("date").getValue().split(" ")[0].replace(/-/g, "");
-                                                                        getData(d, "power", item.value);
-                                                                    }
-                                                                }
+                                                                css: "panel",
+                                                                cols: [
+                                                                    {
+                                                                        width: 200, css: "panel-1", minHeight: 270,
+                                                                        rows: [
+                                                                            {
+                                                                                view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
+                                                                                css: 'search',
+                                                                                on: {
+                                                                                    onTimedKeyPress: function () {
+                                                                                        let dev = $$("agc:dev");
+                                                                                        let str = this.getValue();
+                                                                                        dev.filter(function(obj){
+                                                                                            return obj.value.indexOf(str) !== -1;
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {height: 5},
+                                                                            {
+                                                                                view: "list", select: 1, borderless: 1, css: "panel-1 list",
+                                                                                data: [], scroll: "y", id: "agc:dev",
+                                                                                tooltip: function (obj) {
+                                                                                    return obj.value;
+                                                                                },
+                                                                                on: {
+                                                                                    onItemClick: function (id) {
+                                                                                        let item = $$("agc:dev").getItem(id);
+                                                                                        let d = $$("date").getValue().split(" ")[0].replace(/-/g, "");
+                                                                                        getData(d, "agc", item.value);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {id: "chart6", minWidth: 600}
+                                                                ]
                                                             }
                                                         ]
-                                                    },
-                                                    {id: "chart2", minWidth: 600}
-                                                ]
-                                            },
-                                            {
-                                                css: "panel",
-                                                cols: [
-                                                    {
-                                                        width: 200, css: "panel-1", minHeight: 300,
-                                                        rows: [
-                                                            {
-                                                                view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
-                                                                css: 'search',
-                                                                on: {
-                                                                    onTimedKeyPress: function () {
-                                                                        let dev = $$("margin:dev");
-                                                                        let str = this.getValue();
-                                                                        dev.filter(function(obj){
-                                                                            return obj.value.indexOf(str) !== -1;
-                                                                        });
-                                                                    }
-                                                                }
-                                                            },
-                                                            {height: 5},
-                                                            {
-                                                                view: "list", select: 1, borderless: 1, css: "panel-1 list",
-                                                                data: [], scroll: "y", id: "margin:dev",
-                                                                tooltip: function (obj) {
-                                                                    return obj.value;
-                                                                },
-                                                                on: {
-                                                                    onItemClick: function (id) {
-                                                                        let item = $$("margin:dev").getItem(id);
-                                                                        let d = $$("date").getValue().split(" ")[0].replace(/-/g, "");
-                                                                        getData(d, "margin", item.value);
-                                                                    }
-                                                                }
-                                                            }
-                                                        ]
-                                                    },
-                                                    {id: "chart3", minWidth: 600}
-                                                ]
-                                            },
-                                            {
-                                                css: "panel",
-                                                cols: [
-                                                    {
-                                                        width: 200, css: "panel-1", minHeight: 300,
-                                                        rows: [
-                                                            {
-                                                                view: "search", placeholder: "输入关键字搜索", width: 180, align: "center",
-                                                                css: 'search',
-                                                                on: {
-                                                                    onTimedKeyPress: function () {
-                                                                        let dev = $$("es:dev");
-                                                                        let str = this.getValue();
-                                                                        dev.filter(function(obj){
-                                                                            return obj.value.indexOf(str) !== -1;
-                                                                        });
-                                                                    }
-                                                                }
-                                                            },
-                                                            {height: 5},
-                                                            {
-                                                                view: "list", select: 1, borderless: 1, css: "panel-1 list",
-                                                                data: [], scroll: "y", id: "es:dev",
-                                                                tooltip: function (obj) {
-                                                                    return obj.value;
-                                                                },
-                                                                on: {
-                                                                    onItemClick: function (id) {
-                                                                        let item = $$("es:dev").getItem(id);
-                                                                        let d = $$("date").getValue().split(" ")[0].replace(/-/g, "");
-                                                                        getData(d, "es", item.value);
-                                                                    }
-                                                                }
-                                                            }
-                                                        ]
-                                                    },
-                                                    {id: "chart5", minWidth: 600}
+                                                    }
                                                 ]
                                             }
                                         ]
@@ -455,12 +552,14 @@ export default class Riqianyouhua extends JetView{
         e3 = echarts.init($$("chart3").getNode(), "walden");
         e4 = echarts.init($$("chart4").getNode(), "walden");
         e5 = echarts.init($$("chart5").getNode(), "walden");
+        e6 = echarts.init($$("chart6").getNode(), "walden");
         window.onresize = function() {
             e1.resize();
             e2.resize();
             e3.resize();
             e4.resize();
             e5.resize();
+            e6.resize();
         };
         this.on(this.app, "toggle:menu", function () {
             e1.resize();
@@ -468,6 +567,7 @@ export default class Riqianyouhua extends JetView{
             e3.resize();
             e4.resize();
             e5.resize();
+            e6.resize();
         });
 
         setTimeout(function () {
@@ -481,6 +581,8 @@ export default class Riqianyouhua extends JetView{
             e4.setOption(option4);
             e5.resize();
             e5.setOption(option10);
+            e6.resize();
+            e6.setOption(option12);
             getData($$("date").getValue().split(" ")[0].replace(/-/g, ""), "basic");
         });
     }
